@@ -1,3 +1,5 @@
+![](https://travis-ci.org/pandomic/serverless-offline-variables.svg?branch=master)
+
 # serverless-offline-variables
 
 ## About
