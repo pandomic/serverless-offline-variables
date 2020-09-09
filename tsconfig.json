@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "preserveConstEnums": true,
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "declaration": true,
+    "target": "es2017",
+    "outDir": "dist",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "lib": ["es2019", "es2020.bigint", "es2020.string", "es2020.symbol.wellknown"],
+    "rootDir": "./src/",
+    "typeRoots": ["./src/types", "./node_modules/@types"]
+  },
+  "include": [
+    "src/**/*"
+  ]
+}

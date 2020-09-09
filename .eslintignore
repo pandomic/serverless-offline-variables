@@ -1,0 +1,6 @@
+/node_modules
+/src/types
+/jest.config.js
+/dist
+*.test.ts
+/.eslintrc.js

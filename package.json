@@ -1,0 +1,37 @@
+{
+  "name": "serverless-offline-variables",
+  "version": "0.0.1",
+  "description": "Mock serverless variables in offline or localstack mode",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest .",
+    "build": "tsc",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.10",
+    "@types/serverless": "^1.72.6",
+    "@typescript-eslint/eslint-plugin": "^3.10.1",
+    "@typescript-eslint/parser": "^3.10.1",
+    "eslint": "^7.7.0",
+    "jest": "^26.4.1",
+    "ts-jest": "^26.2.0",
+    "typescript": "^4.0.2"
+  },
+  "keywords": [
+    "serverless",
+    "serverless-offline",
+    "mock",
+    "ssm",
+    "cf",
+    "env",
+    "variables"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pandomic/serverless-offline-variables.git"
+  },
+  "author": "Vlad Gramuzov <vlad.gramuzov@gmail.com>",
+  "license": "MIT"
+}
