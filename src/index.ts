@@ -1,22 +1,15 @@
-import { Plugin, PluginConfig, Serverless, Options } from "./types";
+import { Plugin, PluginConfig, Serverless, Options, Resolver } from "./types";
 
 import { parseDotEnv } from './parser';
 import { readFileContent } from './files';
+import { isWatched, extractFeature } from './resolvers';
 
 const CONFIGURATION_NAME = 'offline-variables';
-const WATCHED_SOURCE_NAMES = ['CloudFormation', 'SSM', 'S3']
-const WATCHED_SOURCE_REGEX = ['env:']
 
 const DEFAULT_CONFIG = {
   stages: ['local'],
   file: '.env'
 };
-
-const isWatchedByName = (name?: string): boolean =>
-  !!name && WATCHED_SOURCE_NAMES.includes(name);
-
-const isWatchedByRegex = (regex?: RegExp): boolean =>
-  !!regex && WATCHED_SOURCE_REGEX.some(str => regex.toString().includes(str));
 
 class ServerlessOfflineVariables implements Plugin {
   hooks = {};
@@ -25,6 +18,7 @@ class ServerlessOfflineVariables implements Plugin {
   private options: Options;
   private log: (message: string) => null;
   private serverless: Serverless;
+  private originalResolvers: { [feature: string]: Resolver } = {};
 
   constructor(serverless: Serverless, options: Options) {
 
@@ -48,12 +42,18 @@ class ServerlessOfflineVariables implements Plugin {
     const envVariables = envContent && parseDotEnv(envContent);
 
     for (const variableResolver of this.serverless.variables.variableResolvers) {
-      if (!isWatchedByName(variableResolver.serviceName) && !isWatchedByRegex(variableResolver.regex)) continue;
+      if (!isWatched(variableResolver)) continue;
+
+      const resolverFeature = extractFeature(variableResolver);
+      this.originalResolvers[resolverFeature] = variableResolver.resolver;
 
       variableResolver.resolver = async (variable: string) => {
         const value = envVariables && envVariables[variable] || this.config.variables?.[variable];
 
-        if (!value) this.log(`Could not resolve value for` + variable);
+        if (!value) {
+          this.log(`Could not resolve value for ${variable}, trying with original resolver...`);
+          return this.originalResolvers[resolverFeature](variable);
+        }
 
         return value;
       }

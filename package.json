@@ -1,6 +1,6 @@
 {
   "name": "serverless-offline-variables",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Mock serverless variables in offline or localstack mode",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
