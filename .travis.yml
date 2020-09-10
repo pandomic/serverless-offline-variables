@@ -14,9 +14,13 @@ after_success:
   - npm pack
 
 before_deploy:
-  - export ZIP_FILE=$(ls | grep .tgz)
-  - export VERSION_TAG=$(cat package.json | jq .version -r)
-  - git tag $VERSION_TAG
+  - >
+    if ! [ "$BEFORE_DEPLOY_RUN" ]; then
+      export BEFORE_DEPLOY_RUN=1;
+      export ZIP_FILE=$(ls | grep .tgz);
+      export VERSION_TAG=$(cat package.json | jq .version -r);
+      git tag $VERSION_TAG;
+    fi
 
 deploy:
   - provider: releases
