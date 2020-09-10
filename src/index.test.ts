@@ -45,7 +45,7 @@ const createServerless = (): ServerlessType => ({
   }
 });
 
-test('replaces original resolvers', async () => {
+test('replaces original resolvers but leaves unknown values', async () => {
   const serverless = createServerless();
 
   new Plugin(serverless, { stage: 'local', region: '' });
@@ -67,10 +67,20 @@ test('replaces original resolvers', async () => {
   const cfValue = cfResolver && await cfResolver.resolver('cf:variable');
   const envValue = envResolver && await envResolver.resolver('env:variable');
 
+  const unknownSsmValue = ssmResolver && await ssmResolver.resolver('ssm:unknown-variable');
+  const unknownS3Value = s3Resolver && await s3Resolver.resolver('s3:unknown-variable');
+  const unknownCfValue = cfResolver && await cfResolver.resolver('cf:unknown-variable');
+  const unknownEnvValue = envResolver && await envResolver.resolver('env:unknown-variable');
+
   expect(ssmValue).toEqual('replaced-ssm');
   expect(s3Value).toEqual('replaced-s3');
   expect(cfValue).toEqual('replaced-cf');
   expect(envValue).toEqual('replaced-env');
+
+  expect(unknownSsmValue).toEqual('original-ssm');
+  expect(unknownS3Value).toEqual('original-s3');
+  expect(unknownCfValue).toEqual('original-cf');
+  expect(unknownEnvValue).toEqual('original-env');
 });
 
 test('does nothing when stage does not match', async () => {

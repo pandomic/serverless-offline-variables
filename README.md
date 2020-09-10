@@ -47,10 +47,13 @@ custom:
 By default plugin will first try to locate your variable in `.env` file
 (or in the file you specified), and only then under the `variables` section.
 
+If `serverless-offline-variables` fails to locate a variable it falls back
+to original resolver.
+
 ## Contributions
 
 You are welcome to create pull requests to improve the project. Please check out
-the [contributing](https://github.com/pandomic/serverless-offline-variables/blob/master/CONTRIBUTING.md)
+the [contribution](https://github.com/pandomic/serverless-offline-variables/blob/master/CONTRIBUTING.md)
 quick guide to get started.
 
 ## License
