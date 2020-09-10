@@ -19,3 +19,17 @@ describe('isWatched()', () => {
     expect(isWatched(resolver)).toEqual(false);
   });
 });
+
+describe('extractFeature()', () => {
+  test('returns feature for named resolver', () => {
+    const resolver = { serviceName: 'SSM', regex: /.+/, resolver: async () => null };
+
+    expect(extractFeature(resolver)).toEqual('SSM');
+  });
+
+  test('returns feature for resolver with regex', () => {
+    const resolver = { regex: /^env:/, resolver: async () => null };
+
+    expect(extractFeature(resolver)).toEqual('/^env:/');
+  });
+});
